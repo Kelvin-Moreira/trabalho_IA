@@ -2,7 +2,17 @@ import random
 from utils import calcular_custo
 from .operadores import torneio, order_crossover, inversion_mutation
 
-def executar_ga(matriz_distancias, num_geracoes=1500, tam_populacao=150, taxa_mutacao=0.10):
+def executar_ga(matriz_distancias, num_geracoes=1500, tam_populacao=150, taxa_mutacao=0.30, seed=None):
+
+    if seed is not None:
+        random.seed(seed)
+    else:
+        # Se nenhuma seed for passada, garante que o relógio do sistema cria uma nova
+        random.seed() 
+        
+    num_cidades = len(matriz_distancias)
+
+
     num_cidades = len(matriz_distancias)
     
     # Inicialização Otimizada com Cache de Fitness
