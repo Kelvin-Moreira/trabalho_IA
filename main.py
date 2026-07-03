@@ -1,9 +1,9 @@
 from utils import carregar_matriz
-from ga import executar_ga
+import GA.ga
 
 def main():
     # 1. Carregar os dados (Certifique-se de que o ficheiro txt está na mesma pasta)
-    caminho_arquivo = 'bays29.txt' 
+    caminho_arquivo = 'tsp\Bays29.txt' 
     print(f"Lendo a matriz de distâncias de: {caminho_arquivo}")
     
     try:
@@ -15,11 +15,11 @@ def main():
 
     # 2. Executar o Algoritmo Genético
     # Pode ajustar estes hiperparâmetros depois para comparar performance
-    melhor_rota, historico = executar_ga(
+    melhor_rota, historico = GA.ga.executar_ga(
         matriz_distancias=matriz, 
         num_geracoes=1500, 
         tam_populacao=150, 
-        taxa_mutacao=0.10
+        taxa_mutacao=0.30
     )
 
     # 3. Imprimir o Veredito

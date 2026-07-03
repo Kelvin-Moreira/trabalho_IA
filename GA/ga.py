@@ -1,54 +1,57 @@
 import random
 from utils import calcular_custo
-from operadores import torneio, order_crossover, inversion_mutation
+from .operadores import torneio, order_crossover, inversion_mutation
 
-def executar_ga(matriz_distancias, num_geracoes=1000, tam_populacao=100, taxa_mutacao=0.05):
+def executar_ga(matriz_distancias, num_geracoes=1500, tam_populacao=150, taxa_mutacao=0.10):
     num_cidades = len(matriz_distancias)
     
-    # Criar população inicial com rotas aleatórias
+    # Inicialização Otimizada com Cache de Fitness
     cidades_base = list(range(num_cidades))
     populacao = []
     for _ in range(tam_populacao):
-        rota_aleatoria = cidades_base.copy()
-        random.shuffle(rota_aleatoria)
-        populacao.append(rota_aleatoria)
+        rota = cidades_base.copy()
+        random.shuffle(rota)
+        custo = calcular_custo(rota, matriz_distancias)
+        populacao.append((rota, custo)) # Guarda o tuplo (rota, custo)
         
     melhor_rota_global = None
     menor_custo_global = float('inf')
     historico_custos = []
 
-    print("Iniciando a Evolução (Algoritmo Genético)...")
+    print("Iniciando GA (Orçamento: {} avaliações)...".format(num_geracoes * tam_populacao))
     
     for geracao in range(num_geracoes):
         nova_populacao = []
         
-        # Avaliar e salvar o melhor da geração atual (Elitismo)
-        melhor_da_geracao = min(populacao, key=lambda r: calcular_custo(r, matriz_distancias))
-        custo_atual = calcular_custo(melhor_da_geracao, matriz_distancias)
+        # Elitismo: Já temos os custos pré-calculados
+        melhor_da_geracao = min(populacao, key=lambda ind: ind[1])
         
-        if custo_atual < menor_custo_global:
-            menor_custo_global = custo_atual
-            melhor_rota_global = melhor_da_geracao.copy()
+        if melhor_da_geracao[1] < menor_custo_global:
+            menor_custo_global = melhor_da_geracao[1]
+            melhor_rota_global = melhor_da_geracao[0].copy()
             
         historico_custos.append(menor_custo_global)
-        nova_populacao.append(melhor_da_geracao) # Passa o melhor intacto
+        # Protege a elite passando uma cópia explícita
+        nova_populacao.append((melhor_da_geracao[0].copy(), melhor_da_geracao[1]))
         
-        # Preencher o restante da nova população
         while len(nova_populacao) < tam_populacao:
-            pai1 = torneio(populacao, matriz_distancias)
-            pai2 = torneio(populacao, matriz_distancias)
+            # Seleciona os pais
+            pai1 = torneio(populacao)
+            pai2 = torneio(populacao)
             
-            filho = order_crossover(pai1, pai2)
+            # Recombina (passando apenas os arrays de rota)
+            filho_rota = order_crossover(pai1[0], pai2[0])
             
+            # Muta
             if random.random() < taxa_mutacao:
-                filho = inversion_mutation(filho)
+                filho_rota = inversion_mutation(filho_rota)
                 
-            nova_populacao.append(filho)
+            # Avalia a função objetivo (ÚNICA VEZ por indivíduo gerado)
+            filho_custo = calcular_custo(filho_rota, matriz_distancias)
+            nova_populacao.append((filho_rota, filho_custo))
             
         populacao = nova_populacao
-        
         if geracao % 100 == 0:
             print(f"Geração {geracao:04d} | Melhor Custo: {menor_custo_global}")
-
-    print("\nEvolução Concluída!")
+        
     return melhor_rota_global, historico_custos

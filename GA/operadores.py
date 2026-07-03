@@ -1,37 +1,48 @@
 import random
-from utils import calcular_custo
 
-def torneio(populacao, matriz_distancias, k=3):
-    """Seleciona as k rotas aleatórias e retorna a de menor custo."""
+def torneio(populacao, k=3):
+    """
+    População agora recebe tuplos: (rota, custo)
+    O Torneio compara diretamente o custo em cache, sem recalcular O(N).
+    """
     competidores = random.sample(populacao, k)
-    melhor = min(competidores, key=lambda rota: calcular_custo(rota, matriz_distancias))
+    # Retorna o indivíduo completo (rota, custo) com o menor custo
+    melhor = min(competidores, key=lambda ind: ind[1])
     return melhor
 
-def order_crossover(p1, p2):
-    """Cruzamento OX com indexação circular."""
-    tamanho = len(p1)
+def order_crossover(p1_rota, p2_rota):
+    """OX com complexidade O(N) através da utilização de Sets (Hash Maps)."""
+    tamanho = len(p1_rota)
     start, end = sorted(random.sample(range(tamanho), 2))
     filho = [-1] * tamanho
     
-    # Passo 1: Copia o segmento interno do Pai 1
-    filho[start:end] = p1[start:end]
+    # 1. Copia o segmento
+    filho[start:end] = p1_rota[start:end]
+    
+    # Busca O(1): Cria um set com as cidades já presentes no filho
+    cidades_presentes = set(filho[start:end])
     
     pos_insercao = end
     pos_busca_p2 = end
     
-    # Passo 2 e 3: Preenche com o Pai 2 (wrap-around com %)
+    # 2. Preenche o restante iterando o Pai 2
     while -1 in filho:
-        cidade_candidata = p2[pos_busca_p2 % tamanho]
-        if cidade_candidata not in filho:
+        cidade_candidata = p2_rota[pos_busca_p2 % tamanho]
+        
+        # A busca num set é O(1), eliminando a ineficiência estrutural
+        if cidade_candidata not in cidades_presentes:
             filho[pos_insercao % tamanho] = cidade_candidata
+            cidades_presentes.add(cidade_candidata)
             pos_insercao += 1
+            
         pos_busca_p2 += 1
         
     return filho
 
 def inversion_mutation(rota):
-    """Inverte um sub-caminho da rota para gerar diversidade."""
     tamanho = len(rota)
     start, end = sorted(random.sample(range(tamanho), 2))
-    rota[start:end] = rota[start:end][::-1]
-    return rota
+    # Copia a rota antes de mutar para não alterar referências indesejadas
+    nova_rota = rota.copy()
+    nova_rota[start:end] = nova_rota[start:end][::-1]
+    return nova_rota
