@@ -3,7 +3,6 @@
 ==================================================
 
 --- Teste 1 ---
-Custo Final: 2034.0
 Geração 0000 | Melhor Custo: 4720.0
 Geração 0100 | Melhor Custo: 2689.0
 Geração 0200 | Melhor Custo: 2508.0
@@ -19,6 +18,7 @@ Geração 1100 | Melhor Custo: 2034.0
 Geração 1200 | Melhor Custo: 2034.0
 Geração 1300 | Melhor Custo: 2034.0
 Geração 1400 | Melhor Custo: 2034.0
+Custo Final: 2034.0
 Melhor Rota: [5, 11, 8, 4, 25, 28, 2, 1, 20, 12, 19, 9, 3, 14, 17, 16, 13, 21, 10, 18, 15, 24, 6, 22, 26, 7, 23, 0, 27]
 
 --- Teste 2 ---
