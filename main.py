@@ -50,7 +50,7 @@ def main():
     os.makedirs(pasta_ag, exist_ok=True) # Cria a pasta se não existir
     os.makedirs(pasta_sa, exist_ok=True) # Cria a pasta se não existir
     
-    caminho_log = os.path.join(pasta_logs, "log_batalha_2.txt")
+    caminho_log = os.path.join(pasta_logs, "log_batalha_1.txt")
     num_testes = 10
 
     print(f"Iniciando a bateria de {num_testes} testes para cada algoritmo. Por favor, aguarde...\n")
@@ -85,7 +85,7 @@ def main():
                 matriz_distancias=matriz, 
                 num_geracoes=1500, 
                 tam_populacao=150, 
-                taxa_mutacao=0.20,  
+                taxa_mutacao=0.10,  
                 seed=None
             )
             
@@ -140,11 +140,11 @@ def main():
             sys.stdout = logger
             
             melhor_rota, historico = SA.sa.executar_sa(
-                matriz_distancias=matriz, 
-                temp_inicial=10000, 
+               matriz_distancias=matriz, 
+                temp_inicial=2000,      
                 temp_final=1, 
-                taxa_resfriamento=0.995, 
-                iteracoes_por_temp=122, 
+                taxa_resfriamento=0.95, 
+                iteracoes_por_temp=50,  
                 seed=None
             )
             

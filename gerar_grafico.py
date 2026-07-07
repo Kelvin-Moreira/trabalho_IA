@@ -29,53 +29,82 @@ def ler_log_sa(caminho):
                 custos.append(custo)
     return iteracoes, custos
 
-def plotar_curva(pasta, funcao_leitura, titulo, label_x, nome_arquivo):
+def plotar_comparacao(arquivos_labels, funcao_leitura, titulo, label_x, nome_arquivo):
     plt.figure(figsize=(10, 6))
     
-    # Cores para diferenciar as 3 execuções
-    cores = ['#1f77b4', '#ff7f0e', '#2ca02c']
+    # Cores contrastantes para diferenciar claramente as configurações
+    cores = ['#d62728', '#ff7f0e', '#1f77b4'] 
     
-    # Lê os 3 arquivos de log da pasta
-    for i in range(1, 4):
-        caminho_arquivo = os.path.join(pasta, f"log_execucao_0{i}.txt")
-        
+    for idx, (caminho_arquivo, label_legenda) in enumerate(arquivos_labels):
         if os.path.exists(caminho_arquivo):
             iteracoes, custos = funcao_leitura(caminho_arquivo)
-            resultado_final = custos[-1]
+            
+            # TRUQUE DO ZOOM: Cortamos o ponto inicial (Geração/Ciclo 0)
+            # Isso impede que o custo inicial de ~5000 achate as linhas no gráfico
+            if len(iteracoes) > 1:
+                iteracoes = iteracoes[1:]
+                custos = custos[1:]
+                
+            resultado_final = custos[-1] if custos else 0
+            
             plt.plot(
                 iteracoes,
                 custos,
                 marker='o',
-                markersize=4,
-                color=cores[i-1],
-                linewidth=2,
-                label=f'Execução {i} (Melhor: {resultado_final:.0f})'
+                markersize=5,
+                color=cores[idx],
+                linewidth=2.5,
+                label=f'{label_legenda} (Melhor: {resultado_final:.0f})'
             )
         else:
-            print(f"Aviso: {caminho_arquivo} não encontrado.")
+            print(f"Aviso Crítico: O ficheiro {caminho_arquivo} não foi encontrado na pasta raiz.")
 
     # Adiciona a linha do Ótimo Global
-    plt.axhline(y=2020.0, color='r', linestyle='--', linewidth=1.5, label='Ótimo Global (2020.0)')
+    plt.axhline(y=2020.0, color='black', linestyle='--', linewidth=1.5, label='Ótimo Global (2020.0)')
 
-    # Formatação do Gráfico
+    # Formatação do Gráfico para padrão de Relatório/Artigo
     plt.title(titulo, fontsize=14, fontweight='bold')
     plt.xlabel(label_x, fontsize=12)
     plt.ylabel('Custo da Rota', fontsize=12)
     plt.grid(True, linestyle=':', alpha=0.7)
-    plt.legend(fontsize=10)
+    plt.legend(fontsize=11, loc='upper right')
     plt.tight_layout()
     
-    # Salva a imagem
+    # Salva a imagem em alta resolução
     plt.savefig(nome_arquivo, dpi=300)
     print(f"Gráfico salvo com sucesso: {nome_arquivo}")
     plt.close()
 
 if __name__ == "__main__":
-    print("Gerando gráficos de convergência...")
-    plotar_curva("teste_AG", ler_log_ag, 
-                 "Curva de Convergência (3 Execuções) - Algoritmo Genético", 
-                 "Gerações", "convergencia_AG.png")
-                 
-    plotar_curva("teste_SA", ler_log_sa, 
-                 "Curva de Convergência (3 Execuções) - Simulated Annealing", 
-                 "Ciclos Térmicos", "convergencia_SA.png")
+    print("Gerando gráficos de Análise de Sensibilidade...\n")
+    
+    # 1. Configuração do Algoritmo Genético
+    # Estrutura: ("nome_do_arquivo.txt", "Rótulo que vai aparecer na Legenda")
+    arquivos_ag = [
+        ("teste_AG\log_execucao_mut_10.txt", "Mutação 10%"),
+        ("teste_AG\log_execucao_mut_20.txt", "Mutação 20%"),
+        ("teste_AG\log_execucao_mut_30.txt", "Mutação 30%")
+    ]
+    
+    plotar_comparacao(
+        arquivos_labels=arquivos_ag, 
+        funcao_leitura=ler_log_ag, 
+        titulo="Análise de Sensibilidade: Taxa de Mutação (GA)", 
+        label_x="Iterações", 
+        nome_arquivo="analise_sensibilidade_AG.png"
+    )
+                     
+    # 2. Configuração do Simulated Annealing
+    arquivos_sa = [
+        ("teste_SA\log_execucao_taxa_85.txt", "Resfriamento 0.85"),
+        ("teste_SA\log_execucao_taxa_95.txt", "Resfriamento 0.95"),
+        ("teste_SA\log_execucao_taxa_995.txt", "Resfriamento 0.995")
+    ]
+    
+    plotar_comparacao(
+        arquivos_labels=arquivos_sa, 
+        funcao_leitura=ler_log_sa, 
+        titulo="Análise de Sensibilidade: Curva de Resfriamento (SA)", 
+        label_x="Ciclos Térmicos", 
+        nome_arquivo="analise_sensibilidade_SA.png"
+    )
