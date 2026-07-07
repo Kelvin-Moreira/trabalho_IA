@@ -1,5 +1,6 @@
 import math
 import random
+import time
 from utils import calcular_custo
 
 def gerar_vizinho_2opt(rota):
@@ -40,6 +41,9 @@ def executar_sa(matriz_distancias, temp_inicial=10000, temp_final=1, taxa_resfri
     
     melhor_rota_global = rota_atual.copy()
     menor_custo_global = custo_atual
+
+    inicio_tempo = time.time()
+
     
     temperatura = temp_inicial
     historico_custos = []
@@ -72,7 +76,8 @@ def executar_sa(matriz_distancias, temp_inicial=10000, temp_final=1, taxa_resfri
         
         # Feedback visual a cada 100 ciclos (Não afeta o cronómetro significativo)
         if ciclo % 100 == 0:
-            print(f"Ciclo {ciclo:04d} | Temp: {temperatura:7.2f} | Melhor Custo: {menor_custo_global}")
+            tempo_decorrido = time.time() - inicio_tempo
+            print(f"Ciclo {ciclo:04d} | Temp: {temperatura:7.2f} | Melhor Custo: {menor_custo_global} | Tempo Decorrido: {tempo_decorrido:.2f}s")
             
         # 4. Decaimento Térmico (Esfriamento Geométrico)
         temperatura *= taxa_resfriamento

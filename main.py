@@ -1,6 +1,7 @@
 import os
 import time 
 import math
+import sys # ADIÇÃO: Necessário para capturar o log do terminal
 from utils import carregar_matriz
 
 try:
@@ -9,6 +10,24 @@ except ImportError:
     import ga
     
 import SA.sa
+
+# ADIÇÃO: Classe para espelhar o print do terminal para um arquivo de texto
+class CapturarSaida:
+    def __init__(self, caminho_arquivo):
+        self.terminal = sys.stdout
+        self.log = open(caminho_arquivo, "w", encoding="utf-8")
+
+    def write(self, mensagem):
+        self.terminal.write(mensagem) # Imprime na tela normalmente
+        self.log.write(mensagem)      # Salva no arquivo ao mesmo tempo
+
+    def flush(self):
+        self.terminal.flush()
+        self.log.flush()
+
+    def fechar(self):
+        self.log.close()
+        sys.stdout = self.terminal # Devolve o controle normal ao Python
 
 def main():
     # 1. Carregar os dados
@@ -22,10 +41,16 @@ def main():
         print(f"Erro ao abrir ou ler o ficheiro: {e}")
         return
 
-    # 2. Configurar o sistema de Logs Unificado
+    # 2. Configurar o sistema de Logs Unificado e Pastas Individuais
     pasta_logs = "teste_comparativo"
+    pasta_ag = "teste_AG" # ADIÇÃO: Pasta para os logs do GA
+    pasta_sa = "teste_SA" # ADIÇÃO: Pasta para os logs do SA
+    
     os.makedirs(pasta_logs, exist_ok=True) 
-    caminho_log = os.path.join(pasta_logs, "log_batalha_3.txt")
+    os.makedirs(pasta_ag, exist_ok=True) # Cria a pasta se não existir
+    os.makedirs(pasta_sa, exist_ok=True) # Cria a pasta se não existir
+    
+    caminho_log = os.path.join(pasta_logs, "log_batalha_2.txt")
     num_testes = 10
 
     print(f"Iniciando a bateria de {num_testes} testes para cada algoritmo. Por favor, aguarde...\n")
@@ -44,23 +69,31 @@ def main():
         arquivo_log.write("-" * 90 + "\n")
         
         resultados_ga = []
-        tempos_ga = [] # ADIÇÃO: Lista para guardar os tempos
+        tempos_ga = [] 
         melhor_rota_absoluta_ga = None
         menor_custo_ga = float('inf')
         
         for i in range(1, num_testes + 1):
-            inicio_tempo = time.time() # Inicia o cronómetro
+            inicio_tempo = time.time() 
+            
+            # ADIÇÃO: Inicia a captura do terminal para o arquivo iterativo do AG
+            arquivo_iterativo = os.path.join(pasta_ag, f"log_execucao_{i:02d}.txt")
+            logger = CapturarSaida(arquivo_iterativo)
+            sys.stdout = logger
             
             melhor_rota, historico = ga.executar_ga(
                 matriz_distancias=matriz, 
                 num_geracoes=1500, 
                 tam_populacao=150, 
-                taxa_mutacao=0.30,  
+                taxa_mutacao=0.20,  
                 seed=None
             )
             
-            fim_tempo = time.time() # Para o cronómetro
-            tempo_execucao = fim_tempo - inicio_tempo # Calcula a diferença
+            # ADIÇÃO: Encerra a captura e volta ao normal
+            logger.fechar()
+            
+            fim_tempo = time.time() 
+            tempo_execucao = fim_tempo - inicio_tempo 
             
             custo_final = historico[-1]
             resultados_ga.append(custo_final)
@@ -75,15 +108,16 @@ def main():
         media_ga = sum(resultados_ga) / num_testes
         media_tempo_ga = sum(tempos_ga) / num_testes
         pior_ga = max(resultados_ga)
-        desvio_ga = math.sqrt(sum((x - media_ga) ** 2 for x in resultados_ga) / num_testes - 1)
+        desvio_ga = math.sqrt(sum((x - media_ga) ** 2 for x in resultados_ga) / (num_testes - 1) if num_testes > 1 else 0)
         
         arquivo_log.write(f"\n[GA] ESTATÍSTICAS:\n")
         arquivo_log.write(f"Custo Médio: {media_ga:.2f}\n")
         arquivo_log.write(f"Tempo Médio de Execução: {media_tempo_ga:.4f} segundos\n")
         arquivo_log.write(f"Melhor Custo Absoluto: {menor_custo_ga}\n")
-        arquivo_log.write(f"Melhor Rota Absoluta: {melhor_rota_absoluta_ga}")
+        arquivo_log.write(f"Melhor Rota Absoluta: {melhor_rota_absoluta_ga}\n")
         arquivo_log.write(f"Pior Absoluto: {pior_ga}\n")
         arquivo_log.write(f"Desvio Padrão: {desvio_ga:.2f}\n\n\n")
+
         # ==========================================
         # FASE 2: SIMULATED ANNEALING (SA)
         # ==========================================
@@ -93,12 +127,17 @@ def main():
         arquivo_log.write("-" * 90 + "\n")
         
         resultados_sa = []
-        tempos_sa = [] # ADIÇÃO: Lista para guardar os tempos
+        tempos_sa = [] 
         melhor_rota_absoluta_sa = None
         menor_custo_sa = float('inf')
         
         for i in range(1, num_testes + 1):
-            inicio_tempo = time.time() # Inicia o cronómetro
+            inicio_tempo = time.time() 
+            
+            # ADIÇÃO: Inicia a captura do terminal para o arquivo iterativo do SA
+            arquivo_iterativo = os.path.join(pasta_sa, f"log_execucao_{i:02d}.txt")
+            logger = CapturarSaida(arquivo_iterativo)
+            sys.stdout = logger
             
             melhor_rota, historico = SA.sa.executar_sa(
                 matriz_distancias=matriz, 
@@ -109,8 +148,11 @@ def main():
                 seed=None
             )
             
-            fim_tempo = time.time() # Para o cronómetro
-            tempo_execucao = fim_tempo - inicio_tempo # Calcula a diferença
+            # ADIÇÃO: Encerra a captura e volta ao normal
+            logger.fechar()
+            
+            fim_tempo = time.time() 
+            tempo_execucao = fim_tempo - inicio_tempo 
             
             custo_final = historico[-1]
             resultados_sa.append(custo_final)
@@ -125,7 +167,7 @@ def main():
         media_sa = sum(resultados_sa) / num_testes
         media_tempo_sa = sum(tempos_sa) / num_testes
         pior_sa = max(resultados_sa)
-        desvio_sa = math.sqrt(sum((x - media_sa) ** 2 for x in resultados_sa) / (num_testes - 1))
+        desvio_sa = math.sqrt(sum((x - media_sa) ** 2 for x in resultados_sa) / (num_testes - 1) if num_testes > 1 else 0)
         
         arquivo_log.write(f"\n[SA] ESTATÍSTICAS:\n")
         arquivo_log.write(f"Custo Médio: {media_sa:.2f}\n")
@@ -154,8 +196,6 @@ def main():
         arquivo_log.write(f" - Custo Médio: {media_sa:.2f} (Erro: {((media_sa - otimo_conhecido)/otimo_conhecido)*100:.2f}%)\n")
         arquivo_log.write(f" - Tempo Médio: {media_tempo_sa:.4f}s\n")
 
-        # Decisão baseada apenas no custo para manter a consistência, 
-        # mas o tempo está agora disponível para a sua análise textual.
         if media_ga < media_sa:
             vencedor = "ALGORITMO GENÉTICO (GA)"
         elif media_sa < media_ga:
@@ -172,6 +212,7 @@ def main():
     print(f"Média do SA: {media_sa:.2f} | Tempo Médio: {media_tempo_sa:.4f}s")
     print(f"Vencedor no Custo: {vencedor}")
     print(f"\nRelatório completo guardado em: {caminho_log}")
+    print("Os logs iterativos (curva de convergência) foram guardados nas pastas 'teste_AG' e 'teste_SA'.")
 
 if __name__ == "__main__":
     main()

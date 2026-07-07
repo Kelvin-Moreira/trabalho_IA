@@ -1,4 +1,5 @@
 import random
+import time
 from utils import calcular_custo
 from .operadores import torneio, order_crossover, inversion_mutation
 
@@ -32,7 +33,7 @@ def executar_ga(matriz_distancias, num_geracoes=1500, tam_populacao=150, taxa_mu
     historico_custos = []
 
     print("Iniciando GA (Orçamento: {} avaliações)...".format(num_geracoes * tam_populacao))
-    
+    inicio_tempo = time.time()
     # 2. Ciclo Evolutivo
     for geracao in range(num_geracoes):
         nova_populacao = []
@@ -71,6 +72,7 @@ def executar_ga(matriz_distancias, num_geracoes=1500, tam_populacao=150, taxa_mu
         populacao = nova_populacao
         
         if geracao % 100 == 0:
-            print(f"Geração {geracao:04d} | Melhor Custo: {menor_custo_global}")
+            tempo_decorrido = time.time() - inicio_tempo
+            print(f"Geração {geracao:04d} | Melhor Custo: {menor_custo_global} | Tempo Decorrido: {tempo_decorrido:.2f}s")
         
     return melhor_rota_global, historico_custos
