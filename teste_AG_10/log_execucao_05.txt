@@ -1,0 +1,16 @@
+Iniciando GA (Orçamento: 225000 avaliações)...
+Geração 0000 | Melhor Custo: 4857.0 | Tempo Decorrido: 0.00s
+Geração 0100 | Melhor Custo: 2070.0 | Tempo Decorrido: 0.21s
+Geração 0200 | Melhor Custo: 2068.0 | Tempo Decorrido: 0.41s
+Geração 0300 | Melhor Custo: 2068.0 | Tempo Decorrido: 0.61s
+Geração 0400 | Melhor Custo: 2068.0 | Tempo Decorrido: 0.81s
+Geração 0500 | Melhor Custo: 2068.0 | Tempo Decorrido: 1.01s
+Geração 0600 | Melhor Custo: 2068.0 | Tempo Decorrido: 1.21s
+Geração 0700 | Melhor Custo: 2068.0 | Tempo Decorrido: 1.46s
+Geração 0800 | Melhor Custo: 2068.0 | Tempo Decorrido: 1.68s
+Geração 0900 | Melhor Custo: 2068.0 | Tempo Decorrido: 1.91s
+Geração 1000 | Melhor Custo: 2068.0 | Tempo Decorrido: 2.19s
+Geração 1100 | Melhor Custo: 2068.0 | Tempo Decorrido: 2.41s
+Geração 1200 | Melhor Custo: 2068.0 | Tempo Decorrido: 2.67s
+Geração 1300 | Melhor Custo: 2068.0 | Tempo Decorrido: 2.94s
+Geração 1400 | Melhor Custo: 2068.0 | Tempo Decorrido: 3.19s

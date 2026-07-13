@@ -43,8 +43,8 @@ def main():
 
     # 2. Configurar o sistema de Logs Unificado e Pastas Individuais
     pasta_logs = "teste_comparativo"
-    pasta_ag = "teste_AG" # ADIÇÃO: Pasta para os logs do GA
-    pasta_sa = "teste_SA" # ADIÇÃO: Pasta para os logs do SA
+    pasta_ag = "teste_AG_teste" # ADIÇÃO: Pasta para os logs do GA
+    pasta_sa = "teste_SA_teste" # ADIÇÃO: Pasta para os logs do SA
     
     os.makedirs(pasta_logs, exist_ok=True) 
     os.makedirs(pasta_ag, exist_ok=True) # Cria a pasta se não existir
@@ -85,7 +85,7 @@ def main():
                 matriz_distancias=matriz, 
                 num_geracoes=1500, 
                 tam_populacao=150, 
-                taxa_mutacao=0.10,  
+                taxa_mutacao=0.30,  
                 seed=None
             )
             
@@ -141,10 +141,10 @@ def main():
             
             melhor_rota, historico = SA.sa.executar_sa(
                matriz_distancias=matriz, 
-                temp_inicial=2000,      
+                temp_inicial=10000,      
                 temp_final=1, 
-                taxa_resfriamento=0.95, 
-                iteracoes_por_temp=50,  
+                taxa_resfriamento=0.85, 
+                iteracoes_por_temp=122,  
                 seed=None
             )
             

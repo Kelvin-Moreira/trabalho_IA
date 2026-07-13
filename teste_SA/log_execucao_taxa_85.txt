@@ -1,6 +1,0 @@
-Ciclo 0000 | Temp: 10000.00 | Melhor Custo: 5332.0 | Tempo Decorrido: 0.0000s
-Ciclo 0010 | Temp: 1968.74 | Melhor Custo: 4769.0 | Tempo Decorrido: 0.0168s
-Ciclo 0020 | Temp:  387.60 | Melhor Custo: 4413.0 | Tempo Decorrido: 0.0257s
-Ciclo 0030 | Temp:   76.31 | Melhor Custo: 3770.0 | Tempo Decorrido: 0.0358s
-Ciclo 0040 | Temp:   15.02 | Melhor Custo: 2263.0 | Tempo Decorrido: 0.0358s
-Ciclo 0050 | Temp:    2.96 | Melhor Custo: 2020.0 | Tempo Decorrido: 0.0547s

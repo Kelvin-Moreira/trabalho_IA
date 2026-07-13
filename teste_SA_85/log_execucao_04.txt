@@ -1,0 +1,12 @@
+Ciclo 0000 | Temp: 10000.00 | Melhor Custo: 5070.0 | Tempo Decorrido: 0.0005s
+Ciclo 0005 | Temp: 4437.05 | Melhor Custo: 4574.0 | Tempo Decorrido: 0.0031s
+Ciclo 0010 | Temp: 1968.74 | Melhor Custo: 4574.0 | Tempo Decorrido: 0.0073s
+Ciclo 0015 | Temp:  873.54 | Melhor Custo: 4574.0 | Tempo Decorrido: 0.0103s
+Ciclo 0020 | Temp:  387.60 | Melhor Custo: 4390.0 | Tempo Decorrido: 0.0134s
+Ciclo 0025 | Temp:  171.98 | Melhor Custo: 4163.0 | Tempo Decorrido: 0.0164s
+Ciclo 0030 | Temp:   76.31 | Melhor Custo: 3177.0 | Tempo Decorrido: 0.0185s
+Ciclo 0035 | Temp:   33.86 | Melhor Custo: 2668.0 | Tempo Decorrido: 0.0222s
+Ciclo 0040 | Temp:   15.02 | Melhor Custo: 2205.0 | Tempo Decorrido: 0.0252s
+Ciclo 0045 | Temp:    6.67 | Melhor Custo: 2095.0 | Tempo Decorrido: 0.0292s
+Ciclo 0050 | Temp:    2.96 | Melhor Custo: 2093.0 | Tempo Decorrido: 0.0324s
+Ciclo 0055 | Temp:    1.31 | Melhor Custo: 2093.0 | Tempo Decorrido: 0.0365s
