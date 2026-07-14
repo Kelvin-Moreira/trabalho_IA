@@ -38,7 +38,7 @@ def ler_curvas_pasta(caminho_pasta, tam_populacao=150):
 
 
 def gerar_grafico_sensibilidade_media(
-    pasta_10, pasta_20, pasta_30, nome_saida="sensibilidade_AG_media_10_exec.png"
+    pasta_10, pasta_20, pasta_30, nome_saida="sensibilidade_AG_media.png"
 ):
     plt.figure(figsize=(10, 6))
 

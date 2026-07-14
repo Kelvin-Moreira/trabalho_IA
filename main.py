@@ -43,7 +43,7 @@ def main():
 
     # 2. Configurar o sistema de Logs Unificado e Pastas Individuais
     pasta_logs = "teste_comparativo"
-    pasta_ag = "teste_AG_teste" # ADIÇÃO: Pasta para os logs do GA
+    pasta_ag = "teste_AG_30" # ADIÇÃO: Pasta para os logs do GA
     pasta_sa = "teste_SA_teste" # ADIÇÃO: Pasta para os logs do SA
     
     os.makedirs(pasta_logs, exist_ok=True) 
@@ -121,6 +121,8 @@ def main():
         # ==========================================
         # FASE 2: SIMULATED ANNEALING (SA)
         # ==========================================
+
+
         print("-> A executar Bateria do Simulated Annealing (SA)...")
         arquivo_log.write("--- FASE 2: SIMULATED ANNEALING (SA) ---\n")
         arquivo_log.write("Parâmetros: Temp Inicial: 10000 | Temp Final: 1 | Resfriamento: 0.995 | Ciclos/Temp: 122\n")
@@ -142,8 +144,8 @@ def main():
             melhor_rota, historico = SA.sa.executar_sa(
                matriz_distancias=matriz, 
                 temp_inicial=10000,      
-                temp_final=1, 
-                taxa_resfriamento=0.85, 
+                orcamento_maximo=225000,
+                taxa_resfriamento=0.95, 
                 iteracoes_por_temp=122,  
                 seed=None
             )

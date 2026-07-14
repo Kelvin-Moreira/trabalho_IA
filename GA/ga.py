@@ -71,7 +71,7 @@ def executar_ga(matriz_distancias, num_geracoes=1500, tam_populacao=150, taxa_mu
             
         populacao = nova_populacao
         
-        if geracao % 100 == 0:
+        if geracao % 10 == 0:
             tempo_decorrido = time.time() - inicio_tempo
             print(f"Geração {geracao:04d} | Melhor Custo: {menor_custo_global} | Tempo Decorrido: {tempo_decorrido:.2f}s")
         

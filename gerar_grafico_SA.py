@@ -51,14 +51,14 @@ def ler_curvas_pasta_sa(caminho_pasta, iteracoes_por_ciclo):
 
 
 def gerar_grafico_sensibilidade_sa(
-    pasta_85, pasta_95, pasta_995, nome_saida="sensibilidade_SA_media_10_exec.png"
+    pasta_85, pasta_95, pasta_995, nome_saida="sensibilidade_SA_media.png"
 ):
     plt.figure(figsize=(10, 6))
 
     # Configurações: (Pasta, Iterações por Ciclo, Rótulo, Cor)
     configuracoes = [
         (pasta_85, 122, "Resfriamento 0.85 (Rápido)", "#d62728"),  # Vermelho
-        (pasta_95, 50, "Resfriamento 0.95 (Intermediário)", "#ff7f0e"),  # Laranja
+        (pasta_95, 122, "Resfriamento 0.95 (Intermediário)", "#ff7f0e"),  # Laranja
         (pasta_995, 122, "Resfriamento 0.995 (Suave)", "#1f77b4"),  # Azul
     ]
 
