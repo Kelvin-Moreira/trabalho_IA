@@ -8,7 +8,7 @@ from agenteIA import AgenteIA
 # CONFIGURAÇÃO DA IA
 # Defina aqui se a ia desse codigo será o Agente 1 ou 2
 # ==========================================
-MEU_AGENTE = AGENTE_2  # Mude para AGENTE_1 se a IA desse codigo for a primeira a jogar
+MEU_AGENTE = AGENTE_1  # Mude para AGENTE_1 se a IA desse codigo for a primeira a jogar se nao mude para AGENTE_2 
 
 if __name__ == "__main__":
     print("=== Batalha de IAs - Iniciando Partida ===")
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     # Identifica o oponente para as validações
     oponente = AGENTE_1 if MEU_AGENTE == AGENTE_2 else AGENTE_2
 
-
+    # [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,2,0,0,0],[0,0,0,1,0,0,0]]
 
     if MEU_AGENTE == AGENTE_1:
         matriz_entrada= [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]]
